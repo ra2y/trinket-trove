@@ -21,6 +21,24 @@ type EventMap = {
     value: string;
     resultsCount: number;
   };
+  add_to_cart: {
+    productId: string;
+    quantity: number;
+    unitPrice: number;
+  };
+  cart_viewed: {
+    itemCount: number;
+    subtotal: number;
+  };
+  cart_quantity_updated: {
+    productId: string;
+    quantity: number;
+    unitPrice: number;
+  };
+  remove_from_cart: {
+    productId: string;
+    quantity: number;
+  };
 };
 
 type EventName = keyof EventMap;

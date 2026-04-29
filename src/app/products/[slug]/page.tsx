@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProductBySlug } from "../../../lib/products";
 import { trackEvent } from "../../../lib/events";
+import { AddToCartButton } from "./add-to-cart-button"
 
 function formatPrice(priceInCents: number) {
   return new Intl.NumberFormat("en-US", {
@@ -60,9 +61,7 @@ export default async function ProductDetailPage({
           <p className="mt-6 text-gray-700">{product.description}</p>
 
           <div className="mt-8">
-            <button className="rounded-lg border px-5 py-3 font-medium">
-              Add to cart
-            </button>
+            <AddToCartButton productId={product.id} />
           </div>
         </div>
       </div>
