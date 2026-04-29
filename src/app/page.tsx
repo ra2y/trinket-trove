@@ -1,41 +1,20 @@
-import { getProducts } from "../lib/products";
+import Link from "next/link";
 
-function formatPrice(priceInCents: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(priceInCents / 100);
-}
-
-export default async function HomePage() {
-  const products = await getProducts();
-
+export default function HomePage() {
   return (
-    <main className="mx-auto max-w-6xl p-8">
-      <h1 className="mb-2 text-3xl font-bold">Mock Store</h1>
-      <p className="mb-8 text-gray-600">
-        Day 1: products loaded from Postgres with Prisma.
+    <main className="mx-auto max-w-5xl p-8">
+      <h1 className="text-4xl font-bold">Trinket Trove</h1>
+      <p className="mt-4 text-gray-600">
+        A mock ecommerce store with a TypeScript analytics dashboard.
       </p>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="rounded-xl border p-4 shadow-sm"
-          >
-            <div className="mb-4 aspect-square rounded-lg bg-gray-100" />
-            <h2 className="text-lg font-semibold">{product.name}</h2>
-            <p className="mt-1 text-sm text-gray-500">
-              {product.category.name}
-            </p>
-            <p className="mt-3 text-sm text-gray-700">
-              {product.description}
-            </p>
-            <p className="mt-4 text-base font-bold">
-              {formatPrice(product.price)}
-            </p>
-          </div>
-        ))}
+      <div className="mt-8 flex gap-4">
+        <Link href="/products" className="rounded-lg border px-4 py-2">
+          Shop products
+        </Link>
+        <Link href="/dashboard" className="rounded-lg border px-4 py-2">
+          View dashboard
+        </Link>
       </div>
     </main>
   );
