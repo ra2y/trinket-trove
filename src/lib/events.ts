@@ -39,6 +39,26 @@ type EventMap = {
     productId: string;
     quantity: number;
   };
+  checkout_started: {
+  itemCount: number;
+  cartValue: number;
+};
+  checkout_completed: {
+    orderId: string;
+    total: number;
+    itemCount: number;
+  };
+  order_created: {
+    orderId: string;
+    total: number;
+    itemCount: number;
+  };
+  order_item_purchased: {
+    orderId: string;
+    productId: string;
+    quantity: number;
+    unitPrice: number;
+  };
 };
 
 type EventName = keyof EventMap;

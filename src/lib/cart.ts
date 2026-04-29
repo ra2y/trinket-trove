@@ -66,3 +66,11 @@ export async function getCartTotals(sessionId: string) {
 
   return { itemCount, subtotal };
 }
+
+export async function clearCart(cartId: string) {
+  await db.cartItem.deleteMany({
+    where: {
+      cartId,
+    },
+  });
+}
