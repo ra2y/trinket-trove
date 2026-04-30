@@ -21,7 +21,13 @@ function percentage(part: number, total: number) {
   return `${Math.round((part / total) * 100)}%`;
 }
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ range?: string }>;
+}) {
+  const params = await searchParams;
+  const range = Number(params.range ?? "7");
   const [metrics, topPurchased, topViewed, funnel, revenueData, recentOrders, recentEvents] =
     await Promise.all([
       getDashboardMetrics(),
@@ -42,6 +48,21 @@ export default async function DashboardPage() {
   return (
     <main className="mx-auto max-w-6xl p-8">
       <h1 className="mb-6 text-3xl font-bold">Dashboard</h1>
+
+      <div className="mb-6 flex gap-4">
+        <a
+          href="/dashboard?range=7"
+          className={`underline ${range === 7 ? "font-bold" : ""}`}
+        >
+          Last 7 days
+        </a>
+        <a
+          href="/dashboard?range=30"
+          className={`underline ${range === 30 ? "font-bold" : ""}`}
+        >
+          Last 30 days
+        </a>
+      </div>
 
       <section className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="rounded-lg border p-4">
