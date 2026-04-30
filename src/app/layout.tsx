@@ -3,15 +3,16 @@ import "./globals.css";
 import { getSessionId } from "../lib/session";
 import { getCartBySessionId } from "../lib/cart";
 
-const sessionId = await getSessionId();
-const cart = sessionId ? await getCartBySessionId(sessionId) : null;
 
-const cartCount =
-  cart?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const sessionId = await getSessionId();
+  const cart = sessionId ? await getCartBySessionId(sessionId) : null;
+
+  const cartCount =
+    cart?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
+
   return (
     <html lang="en">
       <body>
