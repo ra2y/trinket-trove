@@ -1,36 +1,144 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trinket Trove: An Ecommerce Analytics Dashboard
+
+A fullstack TypeScript ecommerce mock store with an event driven analytics dashboard.
+
+This project simulates a real product analytics pipeline from user actions (events) to aggregated insights and visual dashboards.
+
+---
+
+## Live Demo
+
+[Vercel Link](https://trinket-trove-8d835iaff-rachels-projects-5d902f51.vercel.app)
+
+---
+
+## Features
+
+### Ecommerce Flow
+- Product listing and detail pages
+- Cart system (session based, no auth required)
+- Mock checkout flow
+- Order creation and confirmation
+
+### Analytics System
+- Event tracking (product views, add to cart, checkout, purchases)
+- KPI metrics:
+  - Total revenue
+  - Total orders
+  - Average order value
+  - Conversion rates
+- Funnel analysis:
+  - Product viewed → Add to cart → Checkout → Purchase
+- Top products:
+  - Most viewed
+  - Most purchased
+- Time-series analytics:
+  - Revenue over time
+  - Orders over time
+
+### Dashboard
+- Real-time metrics from database
+- Interactive charts (Recharts)
+- Date range filtering (7 days / 30 days)
+- Recent activity feed (orders + events)
+
+---
+
+## Architecture Overview
+
+This project follows a simplified analytics pipeline:
+
+1. **User actions** trigger events  
+2. Events are stored in a database  
+3. Server-side functions aggregate metrics  
+4. Dashboard visualizes the results
+
+User → Event → Database → Aggregation → Dashboard
+
+---
+
+## Tech Stack
+
+### Frontend
+- Next.js (App Router)
+- React
+- TypeScript
+- Tailwind CSS
+- Recharts (charts)
+
+### Backend
+- Node.js (via Next.js)
+- Prisma ORM
+- PostgreSQL
+
+### Infrastructure
+- Vercel (deployment)
+- Prisma migrations
+
+---
+
+## Event Tracking
+
+The app captures key user actions:
+
+- `product_viewed`
+- `add_to_cart`
+- `cart_viewed`
+- `checkout_started`
+- `checkout_completed`
+- `order_created`
+- `order_item_purchased`
+
+These events power all analytics and dashboard metrics.
+
+---
+
+## Example Metrics
+
+- Revenue over time
+- Orders per day
+- Conversion rates
+- Funnel drop-offs
+- Product performance
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the repo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/YOUR_USERNAME/trinket-trove.git
+cd trinket-trove
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+``` 
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Set up environment variables
+Create .env:
 
-## Learn More
+```
+DATABASE_URL="your_postgres_connection_string"
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Run migrations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+npx prisma migrate dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+6. Seed database (optional)
 
-## Deploy on Vercel
+```
+npm run prisma:seed
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+8. Start dev server
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+npm run dev
+```
