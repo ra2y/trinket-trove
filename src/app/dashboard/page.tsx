@@ -5,6 +5,9 @@ import {
   getTopViewedProducts,
 } from "../../lib/analytics";
 import { db } from "../../lib/db";
+import { getRevenueOverTime } from "../../lib/analytics";
+import { RevenueChart } from "../../components/charts/revenue-chart";
+import { OrdersChart } from "../../components/charts/orders-chart";
 
 function formatPrice(priceInCents: number) {
   return new Intl.NumberFormat("en-US", {
@@ -19,12 +22,13 @@ function percentage(part: number, total: number) {
 }
 
 export default async function DashboardPage() {
-  const [metrics, topPurchased, topViewed, funnel, recentOrders, recentEvents] =
+  const [metrics, topPurchased, topViewed, funnel, revenueData, recentOrders, recentEvents] =
     await Promise.all([
       getDashboardMetrics(),
       getTopPurchasedProducts(5),
       getTopViewedProducts(5),
       getFunnelMetrics(),
+      getRevenueOverTime(),
       db.order.findMany({
         orderBy: { createdAt: "desc" },
         take: 5,
@@ -92,7 +96,17 @@ export default async function DashboardPage() {
           </p>
         </div>
       </section>
+      <section className="mb-8 grid gap-8 lg:grid-cols-2">
+        <div className="min-w-0 rounded-lg border p-6">
+          <h2 className="mb-4 text-xl font-semibold">Revenue Over Time</h2>
+          <RevenueChart data={revenueData} />
+        </div>
 
+        <div className="min-w-0 rounded-lg border p-6">
+          <h2 className="mb-4 text-xl font-semibold">Orders Over Time</h2>
+          <OrdersChart data={revenueData} />
+        </div>
+      </section>
       <section className="mb-8 grid gap-8 lg:grid-cols-2">
         <div className="rounded-lg border p-6">
           <h2 className="mb-4 text-xl font-semibold">Top Purchased Products</h2>

@@ -1,4 +1,5 @@
 import { db } from "./db";
+import { fillMissingDays } from "./time";
 
 export async function getDashboardMetrics() {
   const [orders, events] = await Promise.all([
@@ -167,4 +168,70 @@ export async function getFunnelMetrics() {
     { name: "Checkout Started", count: checkoutStarted },
     { name: "Checkout Completed", count: checkoutCompleted },
   ];
+}
+
+export async function getRevenueOverTime() {
+  const orders = await db.order.findMany({
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
+
+  const map = new Map<
+    string,
+    { date: string; revenue: number; orders: number }
+  >();
+
+  for (const order of orders) {
+    const date = order.createdAt.toISOString().split("T")[0];
+
+    const existing = map.get(date);
+
+    if (existing) {
+      existing.revenue += order.total;
+      existing.orders += 1;
+    } else {
+      map.set(date, {
+        date,
+        revenue: order.total,
+        orders: 1,
+      });
+    }
+  }
+
+  const raw = Array.from(map.values());
+
+  return fillMissingDays(raw, {
+    fill: {
+      revenue: 0,
+      orders: 0,
+    },
+  });
+}
+
+export async function getEventsOverTime() {
+  const events = await db.event.findMany({
+    orderBy: {
+      occurredAt: "asc",
+    },
+  });
+
+  const map = new Map<string, { date: string; count: number }>();
+
+  for (const event of events) {
+    const date = event.occurredAt.toISOString().split("T")[0];
+
+    const existing = map.get(date);
+
+    if (existing) {
+      existing.count += 1;
+    } else {
+      map.set(date, {
+        date,
+        count: 1,
+      });
+    }
+  }
+
+  return Array.from(map.values());
 }
